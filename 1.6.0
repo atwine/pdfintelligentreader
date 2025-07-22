@@ -1,0 +1,10 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting mypy
+  Downloading mypy-1.17.0-cp312-cp312-win_amd64.whl.metadata (2.2 kB)
+Requirement already satisfied: typing_extensions>=4.6.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from mypy) (4.12.2)
+Requirement already satisfied: mypy_extensions>=1.0.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from mypy) (1.1.0)
+Requirement already satisfied: pathspec>=0.9.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from mypy) (0.12.1)
+Downloading mypy-1.17.0-cp312-cp312-win_amd64.whl (9.6 MB)
+   ---------------------------------------- 9.6/9.6 MB 295.0 kB/s eta 0:00:00
+Installing collected packages: mypy
+Successfully installed mypy-1.17.0

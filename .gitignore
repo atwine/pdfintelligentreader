@@ -1,4 +1,10 @@
-# Python
+# ============================================
+# PDF INTELLIGENT READER - GITIGNORE
+# ============================================
+
+# ============================================
+# PYTHON
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,26 +29,86 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual Environment
+# ============================================
+# VIRTUAL ENVIRONMENTS
+# ============================================
 venv/
 env/
 ENV/
 env.bak/
 venv.bak/
+.conda/
+conda-meta/
 
-# Environment Variables
+# ============================================
+# ENVIRONMENT & CONFIGURATION
+# ============================================
 .env
 .env.local
 .env.production
+.env.development
+.env.test
+config.ini
+secrets.json
 
-# IDE
+# ============================================
+# PDF PROCESSING OUTPUTS
+# ============================================
+output/*.json
+output/*.txt
+output/*.csv
+output/*.xml
+logs/*.log
+logs/*.txt
+temp/
+tmp/
+
+# Keep output directory but ignore contents
+output/*
+!output/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# ============================================
+# TRIAL AND TEST FILES
+# ============================================
+trial_run_*.json
+advanced_analysis_*.json
+visual_intelligence_*.json
+test_output_*.json
+*_test.pdf
+*_sample.pdf
+
+# ============================================
+# DEVELOPMENT & DEBUGGING
+# ============================================
+.pytest_cache/
+.coverage
+.nyc_output
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ============================================
+# IDE & EDITORS
+# ============================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.vim/
+.emacs.d/
+*.sublime-project
+*.sublime-workspace
 
-# OS
+# ============================================
+# OPERATING SYSTEM
+# ============================================
+# macOS
 .DS_Store
 .DS_Store?
 ._*
@@ -51,17 +117,93 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Project Specific
-logs/
-*.log
-uploads/
-output/
-temp/
-*.db
-*.sqlite
-*.sqlite3
+# Windows
+*.tmp
+*.temp
+*.lnk
+Desktop.ini
 
-# Testing
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ============================================
+# JUPYTER NOTEBOOKS
+# ============================================
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+
+# ============================================
+# DOCUMENTATION BUILD
+# ============================================
+docs/_build/
+docs/build/
+site/
+
+# ============================================
+# PACKAGE MANAGERS
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ============================================
+# TEMPORARY & CLEANUP FILES
+# ============================================
+cleanup_repo.py
+*.backup
+*.bak
+*.orig
+*.rej
+*.swp
+*.tmp
+*.temp
+
+# Version files that might be created during setup
+23.0.0
+*.version
+
+# ============================================
+# SENSITIVE DATA
+# ============================================
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+api_keys.txt
+credentials.json
+secrets/
+
+# ============================================
+# LARGE FILES & MODELS
+# ============================================
+*.model
+*.bin
+*.h5
+*.pkl
+*.pickle
+*.joblib
+*.pt
+*.pth
+
+# ============================================
+# KEEP THESE IMPORTANT FILES
+# ============================================
+# !README.md
+# !requirements.txt
+# !setup_enhanced.py
+# !.env.example
 .pytest_cache/
 .coverage
 htmlcov/

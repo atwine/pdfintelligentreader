@@ -1,0 +1,6 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: requests in c:\users\ic\appdata\roaming\python\python312\site-packages (2.32.4)
+Requirement already satisfied: charset_normalizer<4,>=2 in c:\users\ic\appdata\roaming\python\python312\site-packages (from requests) (3.4.2)
+Requirement already satisfied: idna<4,>=2.5 in c:\users\ic\appdata\roaming\python\python312\site-packages (from requests) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\users\ic\appdata\roaming\python\python312\site-packages (from requests) (2.4.0)
+Requirement already satisfied: certifi>=2017.4.17 in c:\users\ic\appdata\roaming\python\python312\site-packages (from requests) (2025.6.15)
