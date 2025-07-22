@@ -13,12 +13,15 @@
 
 ## 🎯 **Overview**
 
-The PDF Intelligent Reader is a sophisticated document processing system that extracts meaningful, translation-ready sentences from PDF documents. Unlike basic extraction tools that capture everything including noise, our system uses AI-powered intelligence to filter content and retain only complete, contextually relevant sentences.
+The PDF Intelligent Reader (Enhanced Intelligence Branch) is a production-grade, AI-powered document processing system that extracts, filters, and transforms both text and visual content from PDFs into translation-ready, context-rich sentences. It combines multi-dimensional reasoning, advanced visual intelligence, health domain specialization, and paraphrasing for professional translation workflows.
 
-### **Key Innovation: Intelligent Noise Filtering**
-- **Problem**: Basic systems extract 99%+ content including "i LIST OF TABLES", page numbers, headers
-- **Solution**: AI-powered filtering reduces noise by 70-80% using health context understanding  
-- **Result**: Only meaningful, complete thoughts suitable for professional translation
+### **Key Innovations**
+- **Multi-Dimensional Reasoning**: Advanced AI-powered filtering and scoring for relevance, completeness, and translation readiness.
+- **6-Agent Visual Intelligence**: Extracts and interprets images, diagrams, flowcharts, tables, and infographics using OCR and AI vision models.
+- **Health Domain Specialization**: Recognizes 200+ medical terms and surveillance workflows for public health documents.
+- **Intelligent Paraphrasing**: Generates 2-3 paraphrased variants per approved sentence (formal, simplified, action-oriented).
+- **Production-Ready Setup**: Automated environment validation, dependency management, and robust documentation.
+- **Professional Documentation**: Full suite of guides, quick reference, deployment checklist, and repository status.
 
 ---
 
@@ -70,10 +73,15 @@ Meaningful Sentences Output
 ```
 
 ### **Core Components**
-- **🔧 Text Extraction Engine**: Multi-method fallback (pdfplumber → PyMuPDF)
-- **🧠 Intelligent Agent**: Ollama-powered with health context understanding
-- **⭐ Quality Assurance**: Multi-dimensional scoring and validation
-- **📊 Progress Tracking**: Real-time processing with agent interaction visibility
+- **🔧 Text Extraction Engine**: Multi-method fallback (pdfplumber, PyMuPDF)
+- **🧠 Reasoning Processor**: Multi-dimensional AI agent (Ollama Llama 3.1 8B) for sentence approval, scoring, and paraphrasing
+- **🖼️ Visual Intelligence System**: 6-agent pipeline for images, diagrams, tables, and infographics (OpenCV, Tesseract, Ollama LLaVA 7B)
+- **⭐ Quality Assurance**: Multi-factor scoring (completeness, clarity, content, translation readiness)
+- **📊 Progress Tracking**: Real-time, agent-level feedback and logging
+- **🩺 Health Context Engine**: Specialized vocabulary and workflow detection for medical/public health content
+- **🔄 Paraphrasing Engine**: Generates multiple translation-ready variants per approved sentence
+- **🛠️ Robust Setup**: Automated validation, dependency install, and model pulls
+- **📚 Professional Documentation**: Quick reference, deployment checklist, repository status, README
 
 ---
 
@@ -94,31 +102,46 @@ Meaningful Sentences Output
 
 ---
 
-## 🔧 **Features**
+## 🔧 **Features & Improvements (Enhanced Branch)**
 
-### **✅ Intelligent Filtering**
-- AI-powered sentence analysis with reasoning
-- Health context vocabulary (200+ medical terms)
-- Complete thought validation
-- Confidence scoring (0.0-1.0)
+### **✅ Advanced Multi-Dimensional Reasoning**
+- AI-powered sentence approval/rejection with detailed explanations
+- Weighted scoring: context, completeness, translation readiness, health relevance
+- Generates 2-3 paraphrased variants per approved sentence (formal, simplified, action-oriented)
+- Transparent logs: reasoning, scores, agent decisions
 
-### **✅ Processing Capabilities**
-- Large document support (612+ pages)
-- Multiple output formats (JSON, TXT, CSV)
-- Progress tracking with agent interactions
-- Fallback processing if AI unavailable
+### **✅ 6-Agent Visual Intelligence System**
+- **Image Detection**: Finds and classifies visuals (images, charts, diagrams)
+- **OCR Extraction**: Extracts text from visuals (Tesseract OCR)
+- **Chart/Diagram Analysis**: Understands flowcharts, tables, infographics
+- **Visual Context Agent**: Interprets visuals using Ollama LLaVA 7B
+- **Content Synthesis**: Generates descriptive, health-context-aware sentences from visuals
+- **Quality Validation**: Scores and validates visual-derived sentences for translation
+
+### **✅ Health Domain Specialization**
+- Recognizes 200+ medical/surveillance keywords
+- Specialized scoring for public health, clinical, and organizational content
+
+### **✅ Robust Setup & Validation**
+- `setup_enhanced.py`: Automated Python version check, dependency install, Ollama/Tesseract validation, model pulls, and system tests
+- `.env.example`: All config via environment variables
+- `.gitignore` & `.gitkeep`: Professional repo hygiene
+
+### **✅ Professional Documentation**
+- `REPOSITORY_STATUS.md`: System overview, metrics, architecture
+- `DEPLOYMENT_CHECKLIST.md`: Step-by-step deployment and validation
+- `QUICK_REFERENCE.md`: One-page usage and troubleshooting
 
 ### **✅ Quality Examples**
 
 **❌ FILTERED OUT (Noise)**
 - "i LIST OF TABLES"
-- "ii FOREWORD" 
-- "1", "2", "3" (standalone numbers)
 - "Figure 1.2", "Table 2.3"
+- Standalone numbers, headers, page numbers
 
-**✅ KEPT (Meaningful)**
+**✅ KEPT (Meaningful/Visual)**
 - "Disease surveillance is the systematic ongoing collection, collation, analysis and interpretation of health-related data essential to public health practice."
-- "Early detection and response to disease outbreaks is critical for preventing widespread transmission."
+- "The flowchart outlines the five steps of the disease reporting workflow: detection, notification, investigation, response, and feedback."
 
 ---
 
@@ -126,37 +149,54 @@ Meaningful Sentences Output
 
 ```
 pdfIntelligentReader/
-├── enhanced_intelligent_processor.py    # Enhanced processor with progress & agent visibility
-├── standalone_intelligent_processor.py  # Main intelligent processor
-├── src/intelligence/ollama_agent.py     # Core AI agent
-├── main.py                              # CLI interface
-├── requirements.txt                     # Dependencies
-├── docs/                                # Documentation
-└── output/                              # Processing results
+├── enhanced_intelligent_processor.py     # Enhanced processor (multi-agent, paraphrasing, visual)
+├── advanced_reasoning_processor.py       # Multi-dimensional reasoning, scoring, paraphrasing
+├── visual_intelligence_system.py         # 6-agent visual intelligence pipeline
+├── standalone_intelligent_processor.py   # Basic intelligent processor
+├── trial_run.py                         # Trial processing (first 25 sentences)
+├── setup_enhanced.py                    # Automated setup/validation script
+├── requirements.txt                     # Production dependencies
+├── .env.example                         # Environment variable template
+├── output/                              # Processing results (.gitkeep)
+├── logs/                                # System logs (.gitkeep)
+├── tests/                               # Test suite (.gitkeep)
+├── uploads/                             # Input PDFs
+├── REPOSITORY_STATUS.md                 # System overview, capabilities, metrics
+├── DEPLOYMENT_CHECKLIST.md              # Deployment and validation steps
+├── QUICK_REFERENCE.md                   # One-page quick start guide
+├── README.md                            # Main documentation
+├── .gitignore                           # Comprehensive ignore rules
 ```
+
+### **Branch Structure**
+- `main`: Stable baseline
+- `enhanced-intelligence`: Advanced features (multi-agent, visual, paraphrasing, health specialization)
 
 ---
 
-## 🎯 **Use Cases**
+## 🎯 **Usage Examples**
 
 ```bash
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key_here
-OPENAI_MODEL=gpt-4
+# 1. Run setup and validate environment
+python setup_enhanced.py
 
-# Quality Thresholds
-MIN_SENTENCE_COMPLETENESS=0.95
-MIN_TRANSLATION_READINESS=0.90
-MAX_NOISE_THRESHOLD=0.05
+# 2. Trial run (first 25 sentences)
+python trial_run.py "uploads/document.pdf"
 
-# Processing Configuration
-MAX_FILE_SIZE_MB=50
-BATCH_SIZE=10
-PROCESSING_TIMEOUT=300
+# 3. Visual intelligence test (extract from images/diagrams)
+python visual_intelligence_system.py "uploads/document.pdf"
+
+# 4. Full enhanced processing (text + visual, paraphrasing, health scoring)
+python enhanced_intelligent_processor.py "uploads/document.pdf"
+
+# 5. Legacy/basic processing
+python standalone_intelligent_processor.py "uploads/document.pdf"
 ```
 
-### Quality Thresholds
+### **Environment Variables**
+- See `.env.example` for all configuration options (Ollama URL, model names, batch size, thresholds, etc.)
 
+---
 - **Completeness Score**: >95% (grammatical completeness)
 - **Translation Readiness**: >90% (overall translation suitability)
 - **Noise Threshold**: <5% (extraction artifacts and errors)
