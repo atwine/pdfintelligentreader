@@ -512,5 +512,27 @@ def main():
             print(f"{i}. [{confidence:.2f}|{method}] {sentence[:100]}...")
 
 
+def process_pdf_trial(pdf_file: str, max_sentences: int = 25, verbose: bool = True) -> dict:
+    """Minimal, testable trial run for first N sentences with detailed output."""
+    if not os.path.exists(pdf_file):
+        return {"error": f"File not found: {pdf_file}"}
+    text = extract_text(pdf_file)
+    if not text:
+        return {"error": "No text extracted"}
+    sentences = preprocess_text(text)
+    agent = EnhancedHealthAgent()
+    results = []
+    for idx, sentence in enumerate(sentences[:max_sentences]):
+        analysis = agent.analyze_sentence(sentence, show_details=verbose)
+        results.append({
+            "index": idx + 1,
+            "text": sentence,
+            "approved": analysis.get("decision") == "KEEP",
+            "score": analysis.get("confidence", 0),
+            "reasoning": analysis.get("reasoning", ""),
+            "paraphrases": analysis.get("paraphrases") if "paraphrases" in analysis else None
+        })
+    return {"sentences": results, "total": len(results)}
+
 if __name__ == "__main__":
     main()

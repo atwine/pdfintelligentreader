@@ -7,6 +7,7 @@ Multi-agent system for extracting meaningful content from images, charts, and di
 import json
 import base64
 import requests
+import re
 import cv2
 import numpy as np
 from PIL import Image
@@ -104,56 +105,138 @@ class VisualIntelligenceSystem:
         return results
     
     def _extract_visual_elements(self, pdf_path: str) -> List[Dict]:
-        """Extract visual elements from PDF"""
+        """Extract visual elements from PDF with robust error handling"""
         visual_elements = []
         
         try:
             doc = fitz.open(pdf_path)
+            print(f"   📄 Opened PDF: {doc.page_count} pages")
             
             for page_num in range(doc.page_count):
                 page = doc[page_num]
                 
-                # Get images
-                image_list = page.get_images()
+                # Get images with detailed logging
+                image_list = page.get_images(full=True)
+                print(f"   📄 Page {page_num + 1}: Found {len(image_list)} image references")
+                
+                if not image_list:
+                    continue
                 
                 for img_index, img in enumerate(image_list):
                     try:
-                        # Extract image
-                        xref = img[0]
-                        pix = fitz.Pixmap(doc, xref)
+                        # Debug: Log what we got
+                        print(f"      🔍 Processing image {img_index}: {type(img)} - {len(img) if hasattr(img, '__len__') else 'no length'}")
                         
-                        if pix.n - pix.alpha < 4:  # GRAY or RGB
-                            img_data = pix.tobytes("png")
-                            
-                            # Convert to PIL Image
-                            pil_image = Image.open(io.BytesIO(img_data))
-                            
-                            # Classify visual type
-                            visual_type = self._classify_visual_type(pil_image)
-                            
-                            element = {
-                                'page': page_num + 1,
-                                'index': img_index,
-                                'type': visual_type,
-                                'image_data': img_data,
-                                'size': pil_image.size,
-                                'bbox': page.get_image_bbox(img)
-                            }
-                            
-                            visual_elements.append(element)
+                        # Defensive check: ensure img is a proper sequence
+                        if not img or len(img) < 1:
+                            print(f"      ⚠️ Skipping malformed image reference {img_index}")
+                            continue
                         
-                        pix = None
+                        # Method 1: Standard extraction
+                        success = self._extract_image_method1(doc, img, img_index, page_num, visual_elements)
                         
+                        if not success:
+                            # Method 2: Alternative extraction
+                            success = self._extract_image_method2(page, img, img_index, page_num, visual_elements)
+                        
+                        if success:
+                            print(f"      ✅ Successfully extracted image {img_index}")
+                        else:
+                            print(f"      ❌ Failed to extract image {img_index} with all methods")
+                            
                     except Exception as e:
-                        print(f"   ⚠️ Error extracting image {img_index}: {e}")
+                        print(f"      ⚠️ Error processing image {img_index}: {str(e)}")
                         continue
             
             doc.close()
+            print(f"   ✅ Extraction complete: {len(visual_elements)} visual elements found")
             
         except Exception as e:
-            print(f"❌ Error processing PDF: {e}")
+            print(f"   ❌ Error opening PDF: {e}")
+            return []
         
         return visual_elements
+    
+    def _extract_image_method1(self, doc, img, img_index: int, page_num: int, visual_elements: List[Dict]) -> bool:
+        """Primary extraction method using xref"""
+        try:
+            xref = img[0]
+            print(f"         Method 1: Using xref {xref}")
+            
+            pix = fitz.Pixmap(doc, xref)
+            
+            if pix.n - pix.alpha < 4:  # GRAY or RGB
+                img_data = pix.tobytes("png")
+                
+                # Convert to PIL Image
+                pil_image = Image.open(io.BytesIO(img_data))
+                
+                # Classify visual type
+                visual_type = self._classify_visual_type(pil_image)
+                
+                element = {
+                    'page': page_num + 1,
+                    'index': img_index,
+                    'type': visual_type,
+                    'image_data': img_data,
+                    'size': pil_image.size,
+                    'extraction_method': 'xref'
+                }
+                
+                visual_elements.append(element)
+                pix = None
+                return True
+            else:
+                print(f"         Method 1: Unsupported color space (n={pix.n}, alpha={pix.alpha})")
+                pix = None
+                return False
+                
+        except Exception as e:
+            print(f"         Method 1 failed: {str(e)}")
+            return False
+    
+    def _extract_image_method2(self, page, img, img_index: int, page_num: int, visual_elements: List[Dict]) -> bool:
+        """Alternative extraction method using image matrix"""
+        try:
+            print(f"         Method 2: Alternative extraction")
+            
+            # Try to get image using different approach
+            if len(img) >= 7:
+                # img format: (xref, smask, width, height, bpc, colorspace, alt, name, filter)
+                xref, smask, width, height = img[0], img[1], img[2], img[3]
+                
+                if width > 0 and height > 0:
+                    # Create a simple placeholder element for now
+                    element = {
+                        'page': page_num + 1,
+                        'index': img_index,
+                        'type': 'unknown',
+                        'image_data': None,  # Could not extract actual data
+                        'size': (width, height),
+                        'extraction_method': 'metadata_only',
+                        'metadata': {
+                            'xref': xref,
+                            'smask': smask,
+                            'dimensions': (width, height)
+                        }
+                    }
+                    
+                    visual_elements.append(element)
+                    return True
+            
+            return False
+            
+        except Exception as e:
+            print(f"         Method 2 failed: {str(e)}")
+            return False
+    
+    def _safe_get_bbox(self, page, img):
+        """Safely get bounding box for image"""
+        try:
+            return page.get_image_bbox(img)
+        except Exception as e:
+            print(f"         Warning: Could not get bbox: {str(e)}")
+            return None
     
     def _classify_visual_type(self, image: Image.Image) -> str:
         """Classify the type of visual content"""

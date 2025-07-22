@@ -1,4 +1,9 @@
 Defaulting to user installation because normal site-packages is not writeable
-Requirement already satisfied: loguru in c:\users\ic\appdata\roaming\python\python312\site-packages (0.7.3)
-Requirement already satisfied: colorama>=0.3.4 in c:\users\ic\appdata\roaming\python\python312\site-packages (from loguru) (0.4.6)
-Requirement already satisfied: win32-setctime>=1.0.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from loguru) (1.2.0)
+Requirement already satisfied: pdfplumber in c:\users\ic\appdata\roaming\python\python312\site-packages (0.11.7)
+Requirement already satisfied: pdfminer.six==20250506 in c:\users\ic\appdata\roaming\python\python312\site-packages (from pdfplumber) (20250506)
+Requirement already satisfied: Pillow>=9.1 in c:\users\ic\appdata\roaming\python\python312\site-packages (from pdfplumber) (11.2.1)
+Requirement already satisfied: pypdfium2>=4.18.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from pdfplumber) (4.30.1)
+Requirement already satisfied: charset-normalizer>=2.0.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from pdfminer.six==20250506->pdfplumber) (3.4.2)
+Requirement already satisfied: cryptography>=36.0.0 in c:\users\ic\appdata\roaming\python\python312\site-packages (from pdfminer.six==20250506->pdfplumber) (45.0.4)
+Requirement already satisfied: cffi>=1.14 in c:\users\ic\appdata\roaming\python\python312\site-packages (from cryptography>=36.0.0->pdfminer.six==20250506->pdfplumber) (1.17.1)
+Requirement already satisfied: pycparser in c:\users\ic\appdata\roaming\python\python312\site-packages (from cffi>=1.14->cryptography>=36.0.0->pdfminer.six==20250506->pdfplumber) (2.22)
