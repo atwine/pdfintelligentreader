@@ -356,47 +356,40 @@ def preprocess_text(text: str) -> List[str]:
     print("\n🔧 PREPROCESSING TEXT")
     print("=" * 40)
     
-    # Clean up text
+    # Clean up text and normalize formatting
     print("   Normalizing whitespace...")
-    text = re.sub(r'\n+', '\n', text)
+    # Replace multiple newlines with single space, preserve sentence boundaries
+    text = re.sub(r'\n+', ' ', text)
     text = re.sub(r'\s+', ' ', text)
     
-    # Remove obvious artifacts
-    print("   Removing artifacts...")
-    lines = text.split('\n')
-    cleaned_lines = []
+    # Add periods to common sentence endings that are missing punctuation
+    text = re.sub(r'\b(surveillance|health|disease|guidelines|ministry|national|community|workers|system|data|information|reporting|response|investigation|analysis|assessment|monitoring|prevention|control|treatment|diagnosis|management|coordination|implementation|establishment|development|improvement|enhancement|strengthening|training|education|guidance|instruction|recommendation|requirement|objective|target|indicator|standard|criteria|measure|intervention|activity|action|procedure|method|approach|strategy|initiative|program|project|unit|department|organization|institution|facility|hospital|clinic|laboratory|specimen|testing|vaccine|immunization|mortality|morbidity|incidence|prevalence|transmission|outbreak|epidemic|pandemic)\s*(?=[A-Z])', r'\1. ', text)
     
+    # Remove obvious artifacts and short fragments
+    print("   Removing artifacts...")
+    # Split into potential sentences first
+    potential_sentences = re.split(r'(?<=[.!?])\s+', text)
+    
+    cleaned_sentences = []
     artifacts_removed = 0
-    for line in lines:
-        line = line.strip()
-        if (line and 
-            not re.match(r'^\d+$', line) and  # Page numbers
-            not re.match(r'^[ivx]+$', line, re.IGNORECASE) and  # Roman numerals
-            len(line) >= 5):
-            cleaned_lines.append(line)
+    
+    for sentence in potential_sentences:
+        sentence = sentence.strip()
+        # Keep sentences that are substantial and properly formed
+        if (sentence and 
+            len(sentence) >= 15 and  # Minimum meaningful length
+            not re.match(r'^\d+$', sentence) and  # Page numbers
+            not re.match(r'^[ivx]+$', sentence, re.IGNORECASE) and  # Roman numerals
+            not re.match(r'^[A-Z\s]+$', sentence) and  # All caps headers
+            sentence[0].isupper() and  # Proper capitalization
+            sentence.endswith(('.', '!', '?', ':'))):
+            cleaned_sentences.append(sentence)
         else:
             artifacts_removed += 1
     
     print(f"   Removed {artifacts_removed} artifacts")
-    
-    # Rejoin and split into sentences
-    print("   Splitting into sentences...")
-    cleaned_text = ' '.join(cleaned_lines)
-    
-    # Simple sentence splitting
-    sentences = re.split(r'\. +', cleaned_text)
-    
-    # Filter out abbreviations and clean up
-    final_sentences = []
-    abbreviations = ['Dr', 'Mr', 'Mrs', 'Ms', 'Prof', 'vs', 'etc', 'i.e', 'e.g']
-    
-    for sentence in sentences:
-        sentence = sentence.strip()
-        if sentence not in abbreviations and len(sentence) >= 10:
-            final_sentences.append(sentence)
-    
-    print(f"   Found {len(final_sentences)} potential sentences")
-    return final_sentences
+    print(f"   Found {len(cleaned_sentences)} potential sentences")
+    return cleaned_sentences
 
 
 def main():
